@@ -6,11 +6,20 @@ import net.sf.ehcache.Element;
 
 public class App {
 	public static void main(String[] args) throws InterruptedException {
+		final String id = CacheManager.getInstance().getCachePeerListener("RMI").getUniqueResourceIdentifier();
 
-		CacheManager.create();
+		final CacheManager cacheManager = CacheManager.create();
+		final Cache cache = cacheManager.getCache("members");
 
-		Cache cache = CacheManager.getInstance().getCache("members");
-		String id = CacheManager.getInstance().getCachePeerListener("RMI").getUniqueResourceIdentifier();
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Removing member: " + id);
+				cache.remove(id);
+				cacheManager.shutdown();
+			}
+		}));
+
 		cache.put(new Element(id, null));
 
 		while (true) {

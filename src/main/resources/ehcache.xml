@@ -11,7 +11,8 @@
 
 	<cache name="members" maxEntriesLocalHeap="10" eternal="true">
 		<cacheEventListenerFactory
-			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" />
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			properties="replicateRemovals=true" />
 		<bootstrapCacheLoaderFactory
 			class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"
 			properties="bootstrapAsynchronously=false" />
